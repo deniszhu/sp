@@ -19,22 +19,22 @@
  
 	
     <!-- JMS ConnectionFactory to use -->
-    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+    <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="tcp://jms.soulinfo.com:61616"/>
+                <property name="brokerURL" value="${jmsserver.url:tcp://jms.soulinfo.com:61616}"/>
             </bean>
         </property>
         <property name="sessionCacheSize" value="10"/>
         <property name="cacheProducers" value="false"/>
-        <property name="clientId" value="yearbook-jms-cliend-11"/>
+        <property name="clientId" value="${jms.clentId:yearbook-jms-cliend}"/>
     </bean>
     
      <context:component-scan base-package="com.soulinfo.jms.email.listener.EmailQueueListener" />
      <jms:listener-container 
      			container-type="default"  
      			concurrency="1-5" 
-     			connection-factory="connectionFactory" 
+     			connection-factory="jmsConnectionFactory" 
      			acknowledge="transacted">
              <jms:listener destination="email_notification_trigger_queue" ref="emailQueueListener"></jms:listener>
      </jms:listener-container>
@@ -45,7 +45,7 @@
      <jms:listener-container 
      			container-type="default"  
      			concurrency="1-5" 
-     			connection-factory="connectionFactory" 
+     			connection-factory="jmsConnectionFactory" 
      			acknowledge="transacted">
              <jms:listener destination="book_trigger_queue" ref="bookQueueListener"></jms:listener>
      </jms:listener-container>

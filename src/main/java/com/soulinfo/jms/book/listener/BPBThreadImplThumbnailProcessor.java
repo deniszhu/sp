@@ -31,7 +31,6 @@ import com.soulinfo.yearbook.util.Constant;
 @Component("bpbThreadImplThumbnailProcessor")
 public class BPBThreadImplThumbnailProcessor {
 
-	@Value("")
 	private int bpbThreadNum = 10;
 	
 	private int bpbQueueNum = 1000;

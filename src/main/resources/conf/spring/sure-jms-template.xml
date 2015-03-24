@@ -14,14 +14,14 @@
     <bean id="bookJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="sessionTransacted" value="true" />
         <property name="receiveTimeout" value="-1" />
-        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
         <property name="defaultDestinationName" value="book_trigger_queue" />
     </bean>
     
     <bean id="emailNotificationJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="sessionTransacted" value="true" />
         <property name="receiveTimeout" value="-1" />
-        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
         <property name="defaultDestinationName" value="email_notification_trigger_queue" />
     </bean>
     
@@ -29,7 +29,7 @@
     <bean id="cmsJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="sessionTransacted" value="true" />
         <property name="receiveTimeout" value="-1" />
-        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
         <property name="defaultDestinationName" value="cms_trigger_queue" />
     </bean>
     
