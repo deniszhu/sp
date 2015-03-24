@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://cxf.apache.org/jaxrs
+						http://cxf.apache.org/schemas/jaxrs.xsd 
+						http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/jms
+                        http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+
+	<!-- Enable @Autowired -->
+	<context:annotation-config />
+  <aop:config>
+		<aop:aspect id="triggerBookUpdateAspect" ref="bookUpdateAspect">
+     		<aop:pointcut id="bookUpdateBusinessService" 
+     			expression="execution(* com.soulinfo.yearbook.service.*.smartProcessPageJMS(String,String))"/>   
+        	<aop:before pointcut-ref="bookUpdateBusinessService" method="before"/>  
+       		<aop:after-returning 
+       			pointcut-ref="bookUpdateBusinessService" 
+       			method="afterReturning" 
+       			returning="result"/>
+		</aop:aspect>
+		
+		<aop:aspect id="triggerBPBCreateAspect" ref="bookUpdateAspect">
+     		<aop:pointcut id="bbpCreateBusinessService" 
+     			expression="execution(* com.soulinfo.yearbook.service.*.buildPrintBookJMS(..))"/>   
+        	<aop:before pointcut-ref="bbpCreateBusinessService" method="before"/>  
+       		<aop:after-returning 
+       			pointcut-ref="bbpCreateBusinessService" 
+       			method="afterReturning" 
+       			returning="result"/>
+		</aop:aspect>
+		
+		<aop:aspect id="triggerPageUpdateAspect" ref="bookUpdateAspect">
+     		<aop:pointcut id="pageUpdateBusinessService" 
+     			expression="execution(* com.soulinfo.yearbook.service.*.submitPageJMS(String,Integer))"/>   
+        	<aop:before pointcut-ref="pageUpdateBusinessService" method="before"/>  
+       		<aop:after-returning 
+       			pointcut-ref="pageUpdateBusinessService" 
+       			method="afterReturning" 
+       			returning="result"/>
+		</aop:aspect>
+		
+		<aop:aspect id="triggerTplUpdateAspect" ref="bookUpdateAspect">
+     		<aop:pointcut id="tplUpdateBusinessService" 
+     			expression="execution(* com.soulinfo.yearbook.service.*.changePageTpl(..))"/>   
+        	<aop:before pointcut-ref="tplUpdateBusinessService" method="before"/>  
+       		<aop:after-returning 
+       			pointcut-ref="tplUpdateBusinessService" 
+       			method="afterReturning" 
+       			returning="result"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

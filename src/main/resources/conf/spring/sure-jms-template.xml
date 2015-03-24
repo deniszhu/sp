@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://cxf.apache.org/jaxrs
+						http://cxf.apache.org/schemas/jaxrs.xsd">
+
+    <bean id="bookJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="sessionTransacted" value="true" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestinationName" value="book_trigger_queue" />
+    </bean>
+    
+    <bean id="emailNotificationJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="sessionTransacted" value="true" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestinationName" value="email_notification_trigger_queue" />
+    </bean>
+    
+  
+    <bean id="cmsJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="sessionTransacted" value="true" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestinationName" value="cms_trigger_queue" />
+    </bean>
+    
+</beans>
