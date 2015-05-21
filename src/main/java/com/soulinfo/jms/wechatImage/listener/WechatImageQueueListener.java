@@ -12,14 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.soulinfo.framework.exception.ServiceException;
 import com.soulinfo.jms.XmlMapper;
 import com.soulinfo.jms.wechatImage.producer.WechatImageDownMessageJms;
+import com.soulinfo.yearbook.service.WechatService;
 
 @Component(value = "wechatImageQueueListener")
 public class WechatImageQueueListener implements MessageListener, ExceptionListener {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
+	@Autowired
+	private WechatService wechatService;
 	
 	@Autowired
 	protected XmlMapper xmlMapper;
@@ -34,7 +38,8 @@ public class WechatImageQueueListener implements MessageListener, ExceptionListe
 	public void onMessage(Message message) {
 		//1.下载微信图片
 		//2.上传七牛
-		//3.更新相册				
+		//3.更新相册	
+		System.out.println("!!!!!!");
 		try {
             if (message instanceof TextMessage) {
                 TextMessage tm = (TextMessage) message;
@@ -44,13 +49,10 @@ public class WechatImageQueueListener implements MessageListener, ExceptionListe
                     logger.debug("Processed message, value: " + valueJMSMessage);
                 }
                 if(StringUtils.isNotEmpty(valueJMSMessage)){
-                	final WechatImageDownMessageJms WechatImageMessageJms=xmlMapper.getXmlMapper().readValue(valueJMSMessage, WechatImageDownMessageJms.class);             
-                    System.out.println(WechatImageMessageJms.getAccess_token()+"!!!!!!!!!!!!!!!!!!!!!");	
-                    
-//                    if ("PrintBook".equals(bookUpdateMessageJms.getType()))
-//                    		bpbThreadImplThumbnailProcessor.doProcessor(bookUpdateMessageJms);
-//                    else
-//                    		wkThreadImplThumbnailProcessor.doProcessor(bookUpdateMessageJms);
+                	final WechatImageDownMessageJms wechatImageMessageJms=xmlMapper.getXmlMapper().readValue(valueJMSMessage, WechatImageDownMessageJms.class);             
+                    System.out.println(wechatImageMessageJms.getAccess_token()+"!!!!!!!成功监听!!!!!!!!!!!!!!");	
+                                 
+                    wechatService.doWechatImage(wechatImageMessageJms.getAlbumId(), wechatImageMessageJms.getImageOwnerId(), wechatImageMessageJms.getMedia_id(), wechatImageMessageJms.getAccess_token());
                 }
             }
 		} catch (JMSException e) {
@@ -61,6 +63,8 @@ public class WechatImageQueueListener implements MessageListener, ExceptionListe
 			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
+		} catch (ServiceException e) {
+			e.printStackTrace();
 		} 
 		
 		
