@@ -30,7 +30,7 @@ public class WechatImageProducer {
     
     @Autowired
 	@Qualifier("eventQueueDestinationWechat")
-	private  Destination destinationCms;
+	private  Destination destinationWechat;
 
     /**
      * Generates JMS messages
@@ -41,7 +41,7 @@ public class WechatImageProducer {
         	
         	 final String valueJMSMessage = xmlMapper.getXmlMapper().writeValueAsString(wechatImageDownMessageJms);
         	
-            jmsTemplate.send(destinationCms, new MessageCreator() {
+            jmsTemplate.send(destinationWechat, new MessageCreator() {
                 public Message createMessage(Session session) throws JMSException {
                     TextMessage message = session.createTextMessage(valueJMSMessage);
                     if (logger.isDebugEnabled()) {
