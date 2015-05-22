@@ -28,7 +28,7 @@ public class WechatImageProducer {
     @Autowired
     protected XmlMapper xmlMapper;
     
-    
+    @Autowired
 	@Qualifier("eventQueueDestinationWechat")
 	private  Destination destinationCms;
 
