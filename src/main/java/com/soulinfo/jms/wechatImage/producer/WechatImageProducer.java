@@ -51,7 +51,6 @@ public class WechatImageProducer {
                 }
             });
         } catch (Exception e) {
-        	System.out.println(e.getMessage());
             logger.error("Exception during create/send message process");
         }
     }
