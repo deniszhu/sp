@@ -39,7 +39,6 @@ public class WechatImageQueueListener implements MessageListener, ExceptionListe
 		//1.下载微信图片
 		//2.上传七牛
 		//3.更新相册	
-		System.out.println("!!!!!!");
 		try {
             if (message instanceof TextMessage) {
                 TextMessage tm = (TextMessage) message;
@@ -50,8 +49,6 @@ public class WechatImageQueueListener implements MessageListener, ExceptionListe
                 }
                 if(StringUtils.isNotEmpty(valueJMSMessage)){
                 	final WechatImageDownMessageJms wechatImageMessageJms=xmlMapper.getXmlMapper().readValue(valueJMSMessage, WechatImageDownMessageJms.class);             
-                    System.out.println(wechatImageMessageJms.getAccess_token()+"!!!!!!!成功监听!!!!!!!!!!!!!!");	
-                                 
                     wechatService.doWechatImage(wechatImageMessageJms.getAlbumId(), wechatImageMessageJms.getImageOwnerId(), wechatImageMessageJms.getMedia_id(), wechatImageMessageJms.getAccess_token());
                 }
             }
